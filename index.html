@@ -6200,6 +6200,7 @@ function importSave() {
             btnContainer.innerHTML = `
                 <button class="modal-btn cancel" onclick="closeAllModals()">取消</button>
                 <button class="modal-btn confirm" onclick="useItemFromModal()">使用</button>
+                <button class="modal-btn" style="background:linear-gradient(135deg,#9b59b6,#8e44ad)" onclick="useAllSameItems()">全部使用</button>
             `;
         }
         
@@ -6209,6 +6210,57 @@ function importSave() {
                 closeAllModals();
                 selectedItemIndex = null;
             }
+        }
+        
+        function useAllSameItems() {
+            if (selectedItemIndex === null) return;
+            const slot = gameState.inventory[selectedItemIndex];
+            if (!slot) return;
+            
+            const itemId = slot.id;
+            let count = 0;
+            
+            // 统计数量并批量使用
+            gameState.inventory.forEach((s, idx) => {
+                if (s && s.id === itemId && itemId !== 'doc') {
+                    count++;
+                    // 触发效果
+                    gameState.inventory[idx] = null;
+                }
+            });
+            
+            // 根据物品类型加效果
+            const effects = {
+                'potion': () => { gameState.energy = Math.min(gameState.maxEnergy, gameState.energy + 50 * count); return '能量+' + (50*count); },
+                'coffee': () => { gameState.coffeeEndTime = Date.now() + 3600000; return '咖啡效果激活'; },
+                'poop': () => { gameState.spiritStones += 100 * count; return '灵石+' + (100*count); },
+                'token': () => { gameState.cultivation += 500 * count; gameState.totalCultivation += 500 * count; return '修为+' + (500*count); },
+                'cloud': () => { gameState.spiritStones += 200 * count; return '灵石+' + (200*count); },
+                'shield': () => { gameState.shieldCount = (gameState.shieldCount || 0) + count; return '护盾+' + count; },
+                'gacha_common_1': () => { gameState.cultivation += 10 * count; return '修为+' + (10*count); },
+                'gacha_common_2': () => { gameState.energy = Math.min(gameState.maxEnergy, gameState.energy + 20 * count); return '能量+' + (20*count); },
+                'gacha_rare_1': () => { gameState.cultivation += 100 * count; return '修为+' + (100*count); },
+                'gacha_rare_2': () => { gameState.spiritStones += 50 * count; return '灵石+' + (50*count); },
+                'gacha_epic_1': () => { gameState.cultivation += 500 * count; return '修为+' + (500*count); },
+                'gacha_epic_2': () => { gameState.spiritStones += 200 * count; return '灵石+' + (200*count); },
+                'gacha_legend_1': () => { gameState.cultivation += 2000 * count; return '修为+' + (2000*count); },
+                'gacha_legend_2': () => { gameState.spiritStones += 1000 * count; return '灵石+' + (1000*count); },
+            };
+            
+            const item = ITEMS.find(it => it.id === itemId);
+            const msg = effects[itemId] ? effects[itemId]() : '已使用';
+            
+            if (count > 0) {
+                showToast(`📦 批量使用 ${count} 个 ${item?.name || itemId}！${msg}`);
+                addLog(`批量使用 ${count} 个 ${item?.name || itemId}`);
+                audioManager.playSound('useItem');
+                checkRealmUp();
+                updateUI();
+                saveGame();
+            }
+            
+            closeAllModals();
+            selectedItemIndex = null;
         }
 
         function updateAchievements() {
