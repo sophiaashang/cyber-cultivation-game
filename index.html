@@ -10194,7 +10194,40 @@ const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSI
 let sb=null, pid=localStorage.getItem('pid')||'p'+Date.now().toString(36);
 localStorage.setItem('pid',pid);
 async function goOnline(){sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);setInterval(sync,30000);await sync();}
-async function sync(){if(!sb||typeof gameState==='undefined')return;await sb.from('players').upsert({id:pid,name:gameState.name||'道友',avatar:gameState.avatar||'🦊',realm:gameState.realmName||'爬虫小子',cultivation:Math.floor(gameState.cultivation||0),last_seen:Date.now()});const{data,count}=await sb.from('players').select('name,avatar,realm,cultivation',{count:'exact'}).gte('last_seen',Date.now()-600000).order('cultivation',{ascending:false});document.getElementById('headerOnlineCount').textContent=count||0;document.getElementById('onlineCount').textContent=count||0;window.onlinePlayers=data||[];}
+async function sync(){
+  try {
+    if(!sb||typeof gameState==='undefined'){
+      console.log('sync: 等待初始化...');
+      return;
+    }
+    console.log('sync: 开始同步...', pid, gameState.name);
+    
+    // 更新自己的数据
+    const {error: upsertError} = await sb.from('players').upsert({
+      id:pid,
+      name:gameState.name||'道友',
+      avatar:gameState.avatar||'🦊',
+      realm:gameState.realmName||'爬虫小子',
+      cultivation:Math.floor(gameState.cultivation||0),
+      last_seen:Date.now()
+    });
+    if(upsertError) console.log('upsert错误:', upsertError);
+    
+    // 获取在线玩家
+    const {data,count,error: selectError} = await sb.from('players')
+      .select('name,avatar,realm,cultivation',{count:'exact'})
+      .gte('last_seen',Date.now()-600000)
+      .order('cultivation',{ascending:false});
+    if(selectError) console.log('select错误:', selectError);
+    
+    console.log('在线玩家:', count, data);
+    document.getElementById('headerOnlineCount').textContent=count||0;
+    document.getElementById('onlineCount').textContent=count||0;
+    window.onlinePlayers=data||[];
+  } catch(e) {
+    console.log('sync错误:', e);
+  }
+}
 
 
 window.toggleOnlinePanel = async function() {
