@@ -3647,7 +3647,8 @@
                     </div>
                     <div class="setting-item">
                         <span class="setting-label">📥 导入存档</span>
-                        <button class="action-btn" onclick="importSave()">导入</button>
+                        <button class="action-btn" onclick="importFromText()">粘贴导入</button>
+                        <button class="action-btn" onclick="importSave()">文件导入</button>
                     </div>
                     <div class="setting-item">
                         <span class="setting-label">🎁 修复背包</span>
@@ -5686,7 +5687,22 @@
             addLog('玩家导出了存档！');
         }
 
-        function importSave() {
+        
+        function importFromText() {
+            const text = prompt('请粘贴存档数据（从其他版本导出的JSON）：');
+            if (!text) return;
+            try {
+                const imported = JSON.parse(text);
+                gameState = { ...gameState, ...imported };
+                updateUI();
+                saveGame();
+                showToast('存档导入成功！');
+                addLog('玩家导入了存档！');
+            } catch (err) {
+                showToast('存档格式错误！请确保是有效的JSON格式');
+            }
+        }
+function importSave() {
             document.getElementById('fileInput').click();
         }
 
