@@ -10129,8 +10129,9 @@ function checkRealmUp() {
         
         // 数据库配置
         
-        // ==================== 在线系统 (jsonbox.io - 免费无需注册) ====================
-        const JSONBOX_URL = 'https://jsonbox.io/box_c7a8b3d9e2f1_cyber_cultivation';
+        // ==================== 在线系统 (JSONBlob - 免费无需注册) ====================
+        const PLAYERS_BLOB = '019d8bdd-f5e3-7102-b849-40cee434dd82';
+        const MESSAGES_BLOB = '019d8bdd-fba0-7cd7-ad89-9f37899e52dd';
         
         let playerId = localStorage.getItem('player_id') || 'p' + Math.random().toString(36).substr(2, 8);
         localStorage.setItem('player_id', playerId);
@@ -10138,7 +10139,7 @@ function checkRealmUp() {
         let messages = [];
 
         async function initOnlineSystem() {
-            console.log('初始化在线系统...');
+            console.log('🌐 初始化在线系统...');
             await fetchData();
             await registerPlayer();
             setInterval(heartbeat, 30000);
@@ -10147,30 +10148,28 @@ function checkRealmUp() {
 
         async function fetchData() {
             try {
-                const res = await fetch(JSONBOX_URL + '/players');
-                const data = await res.json();
-                players = data[0]?.value || {};
+                const res = await fetch('https://jsonblob.com/api/jsonBlob/' + PLAYERS_BLOB);
+                players = await res.json() || {};
                 
                 // 清理2分钟不活跃
                 const now = Date.now();
                 Object.keys(players).forEach(id => {
-                    if (now - (players[id].lastSeen || 0) > 120000) {
+                    if (now - (players[id]?.lastSeen || 0) > 120000) {
                         delete players[id];
                     }
                 });
                 
                 updateOnlineDisplay();
             } catch (e) {
-                players = {};
+                console.log('获取玩家数据失败');
             }
             
             try {
-                const res = await fetch(JSONBOX_URL + '/messages');
-                const data = await res.json();
-                messages = data[0]?.value || [];
+                const res = await fetch('https://jsonblob.com/api/jsonBlob/' + MESSAGES_BLOB);
+                messages = await res.json() || [];
                 updateChatDisplay();
             } catch (e) {
-                messages = [];
+                console.log('获取消息失败');
             }
         }
 
@@ -10184,17 +10183,30 @@ function checkRealmUp() {
                 lastSeen: Date.now()
             };
             await savePlayers();
+            console.log('✅ 已注册在线玩家:', players[playerId].name);
         }
 
         async function savePlayers() {
             try {
-                await fetch(JSONBOX_URL + '/players', {
+                await fetch('https://jsonblob.com/api/jsonBlob/' + PLAYERS_BLOB, {
                     method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
                     body: JSON.stringify(players)
                 });
             } catch (e) {
-                console.log('保存失败');
+                console.log('保存玩家失败');
+            }
+        }
+
+        async function saveMessages() {
+            try {
+                await fetch('https://jsonblob.com/api/jsonBlob/' + MESSAGES_BLOB, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+                    body: JSON.stringify(messages)
+                });
+            } catch (e) {
+                console.log('保存消息失败');
             }
         }
 
@@ -10222,14 +10234,7 @@ function checkRealmUp() {
             });
             if (messages.length > 100) messages = messages.slice(-100);
             
-            try {
-                await fetch(JSONBOX_URL + '/messages', {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(messages)
-                });
-            } catch (e) {}
-            
+            await saveMessages();
             input.value = '';
             updateChatDisplay();
         }
@@ -10243,7 +10248,7 @@ function checkRealmUp() {
             const el = document.getElementById('chatMessages');
             if (!el) return;
             el.innerHTML = messages.slice(-30).map(m => 
-                '<div style="padding:2px;font-size:12px;">' + m.avatar + ' <b>' + m.sender + ':</b> ' + m.text + '</div>'
+                '<div style="padding:2px;font-size:12px;">' + (m.avatar||'🦊') + ' <b>' + (m.sender||'匿名') + ':</b> ' + (m.text||'') + '</div>'
             ).join('');
             el.scrollTop = el.scrollHeight;
         }
