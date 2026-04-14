@@ -10193,7 +10193,7 @@ const SUPABASE_URL='https://xeutfdyzttlnkgcdxyzm.supabase.co';
 const SUPABASE_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InhldXRmZHl6dHRsbmtnY2R4eXptIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxNzE1NzYsImV4cCI6MjA5MTc0NzU3Nn0._fp8_LQbl_ow3k1MlAsfyIsNB6Ivrjn67Tb0ks0l8D0';
 let sb=null, pid=localStorage.getItem('pid')||'p'+Date.now().toString(36);
 localStorage.setItem('pid',pid);
-async function goOnline(){sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);setInterval(sync,30000);await sync();}
+async function goOnline(){sb=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);setInterval(sync,30000);await sync();}
 async function sync(){if(!sb||typeof gameState==='undefined')return;await sb.from('players').upsert({id:pid,name:gameState.name||'道友',avatar:gameState.avatar||'🦊',realm:gameState.realmName||'爬虫小子',cultivation:Math.floor(gameState.cultivation||0),last_seen:Date.now()});const{data,count}=await sb.from('players').select('name,avatar,realm,cultivation',{count:'exact'}).gte('last_seen',Date.now()-600000).order('cultivation',{ascending:false});document.getElementById('headerOnlineCount').textContent=count||0;document.getElementById('onlineCount').textContent=count||0;window.onlinePlayers=data||[];}
 
 
