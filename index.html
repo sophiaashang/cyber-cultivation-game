@@ -10126,58 +10126,50 @@ function checkRealmUp() {
         
         // 数据库配置
         
+        
+
+
         // ==================== 简易在线系统 ====================
-        (function() {
-            const PLAYERS_BLOB = '019d8bdd-f5e3-7102-b849-40cee434dd82';
-            const playerId = localStorage.getItem('player_id') || 'p' + Date.now().toString(36);
-            localStorage.setItem('player_id', playerId);
+        let onlinePlayerId = localStorage.getItem('player_id') || 'p' + Date.now().toString(36);
+        localStorage.setItem('player_id', onlinePlayerId);
+        
+        function startOnlineSystem() {
+            if (typeof gameState === 'undefined') {
+                setTimeout(startOnlineSystem, 1000);
+                return;
+            }
             
-            // 非阻塞初始化
-            setTimeout(function initOnline() {
-                // 注册玩家
-                fetch('https://jsonblob.com/api/jsonBlob/' + PLAYERS_BLOB)
-                    .then(r => r.json())
-                    .then(data => {
-                        const players = data || {};
-                        const now = Date.now();
-                        
-                        // 清理不活跃玩家
-                        Object.keys(players).forEach(id => {
-                            if (now - (players[id]?.lastSeen || 0) > 120000) {
-                                delete players[id];
-                            }
-                        });
-                        
-                        // 添加自己
-                        players[playerId] = {
-                            name: gameState?.name || '匿名道友',
-                            avatar: gameState?.avatar || '🦊',
-                            realmName: gameState?.realmName || '爬虫小子',
-                            cultivation: Math.floor(gameState?.cultivation || 0),
-                            lastSeen: now
-                        };
-                        
-                        // 更新显示
-                        const count = Object.keys(players).length;
-                        const el = document.getElementById('headerOnlineCount');
-                        if (el) el.textContent = count;
-                        
-                        // 保存
-                        return fetch('https://jsonblob.com/api/jsonBlob/' + PLAYERS_BLOB, {
-                            method: 'PUT',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(players)
-                        });
-                    })
-                    .catch(e => console.log('在线系统离线'));
-                
-                // 定时心跳
-                setInterval(() => initOnline(), 30000);
-            }, 2000); // 延迟2秒，等游戏初始化完成
-        })();
+            fetch('https://jsonblob.com/api/jsonBlob/019d8bdd-f5e3-7102-b849-40cee434dd82')
+                .then(r => r.json())
+                .then(players => {
+                    players = players || {};
+                    const now = Date.now();
+                    
+                    Object.keys(players).forEach(id => {
+                        if (now - (players[id]?.lastSeen || 0) > 120000) delete players[id];
+                    });
+                    
+                    players[onlinePlayerId] = {
+                        name: gameState.name || '匿名道友',
+                        lastSeen: now
+                    };
+                    
+                    const el = document.getElementById('headerOnlineCount');
+                    if (el) el.textContent = Object.keys(players).length;
+                    
+                    return fetch('https://jsonblob.com/api/jsonBlob/019d8bdd-f5e3-7102-b849-40cee434dd82', {
+                        method: 'PUT',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(players)
+                    });
+                })
+                .catch(() => console.log('离线模式'));
+        }
+        
+        setTimeout(startOnlineSystem, 3000);
+        setInterval(startOnlineSystem, 60000);
 
-
-        window.onload = init;
+window.onload = init;
 
         window.switchActivity = function(type) {
             // 检查境界是否解锁
