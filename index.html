@@ -10125,6 +10125,56 @@ function checkRealmUp() {
         // ==================== 真实联机系统 ====================
         
         // 数据库配置
+        // ==================== 在线系统（云电脑服务器） ====================
+        (function() {
+            const API_URL = 'https://c7acbabab2f7aad7-101-126-19-34.serveousercontent.com';
+            const pid = localStorage.getItem('pid') || 'p' + Date.now().toString(36);
+            localStorage.setItem('pid', pid);
+            
+            function updateOnline() {
+                fetch(API_URL + '/players')
+                    .then(r => r.json())
+                    .then(players => {
+                        players = players || {};
+                        const now = Date.now();
+                        
+                        // 清理不活跃玩家
+                        Object.keys(players).forEach(id => {
+                            if (now - (players[id]?.t || 0) > 120000) delete players[id];
+                        });
+                        
+                        // 添加自己
+                        players[pid] = { n: gameState?.name || '道友', t: now };
+                        
+                        // 更新显示
+                        const count = Object.keys(players).length;
+                        const el1 = document.getElementById('headerOnlineCount');
+                        const el2 = document.getElementById('onlineCount');
+                        if (el1) el1.textContent = count;
+                        if (el2) el2.textContent = count;
+                        
+                        // 保存到服务器
+                        fetch(API_URL + '/players', {
+                            method: 'PUT',
+                            headers: {'Content-Type': 'application/json'},
+                            body: JSON.stringify(players)
+                        });
+                    })
+                    .catch(e => console.log('离线模式'));
+            }
+            
+            // 等游戏初始化后启动
+            setTimeout(function check() {
+                if (typeof gameState !== 'undefined') {
+                    updateOnline();
+                    setInterval(updateOnline, 30000);
+                } else {
+                    setTimeout(check, 500);
+                }
+            }, 2000);
+        })();
+
+
         window.onload = init;
 
         window.switchActivity = function(type) {
