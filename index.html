@@ -10196,6 +10196,39 @@ localStorage.setItem('pid',pid);
 async function goOnline(){sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);setInterval(sync,30000);await sync();}
 async function sync(){if(!sb||typeof gameState==='undefined')return;await sb.from('players').upsert({id:pid,name:gameState.name||'道友',avatar:gameState.avatar||'🦊',realm:gameState.realmName||'爬虫小子',cultivation:Math.floor(gameState.cultivation||0),last_seen:Date.now()});const{data,count}=await sb.from('players').select('name,avatar,realm,cultivation',{count:'exact'}).gte('last_seen',Date.now()-300000).order('cultivation',{ascending:false});document.getElementById('headerOnlineCount').textContent=count||0;document.getElementById('onlineCount').textContent=count||0;window.onlinePlayers=data||[];}
 
+
+function toggleOnlinePanel() {
+    const panel = document.getElementById('onlinePanel');
+    if (panel) {
+        panel.classList.toggle('collapsed');
+        if (!panel.classList.contains('collapsed')) {
+            updateOnlinePanelList();
+        }
+    }
+}
+
+function updateOnlinePanelList() {
+    const list = window.onlinePlayers || [];
+    const listEl = document.getElementById('onlineList');
+    if (!listEl) return;
+    
+    let html = '';
+    list.forEach(p => {
+        html += '<div style="display:flex;align-items:center;padding:8px;margin-bottom:4px;background:rgba(0,240,255,0.1);border-radius:8px;">';
+        html += '<span style="font-size:20px;margin-right:8px;">'+(p.avatar||'🦊')+'</span>';
+        html += '<div style="flex:1;">';
+        html += '<div style="color:#fff;font-size:12px;">'+(p.name||'道友')+'</div>';
+        html += '<div style="color:#888;font-size:10px;">'+(p.realm||'爬虫小子')+'</div>';
+        html += '</div></div>';
+    });
+    
+    if (list.length === 0) {
+        html = '<div style="color:#888;text-align:center;padding:20px;">暂无其他道友在线</div>';
+    }
+    
+    listEl.innerHTML = html;
+}
+
 function showOnlinePlayers(){
   const list=window.onlinePlayers||[];
   let html='<div style="padding:20px;max-height:60vh;overflow-y:auto;">';
