@@ -3411,8 +3411,8 @@
     // 注意：版本检查已移到 init() 函数末尾执行，避免影响存档加载
     </script>
     <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+    <script <!-- removed firebase/9.22.0/firebase-app-compat.js"></script>
+    <script <!-- removed firebase/9.22.0/firebase-database-compat.js"></script>
 </head>
 <body>
     <!-- 右上角在线道友显示 -->
@@ -10129,121 +10129,156 @@ function checkRealmUp() {
         
         // 数据库配置
         
-        // ==================== 在线系统 (Firebase) ====================
-        const firebaseConfig = {
-            apiKey: "AIzaSyDemo-REPLACE-WITH-YOUR-KEY",
-            authDomain: "your-project.firebaseapp.com",
-            databaseURL: "https://your-project-default-rtdb.firebaseio.com",
-            projectId: "your-project",
-            storageBucket: "your-project.appspot.com"
-        };
+        // ==================== 在线系统 (JSONBin.io 免费服务) ====================
+        // 公开数据存储 - 所有玩家共享
+        const API_URL = 'https://api.jsonbin.io/v3/b';
+        const BIN_ID = '661ca8e5ad19ca34f868c6a1'; // 玩家数据
+        const MSG_BIN = '661ca8e6ad19ca34f868c6a2'; // 消息数据
+        
+        let playerId = localStorage.getItem('player_id') || 'p' + Date.now().toString(36);
+        localStorage.setItem('player_id', playerId);
+        let onlineSystem = { players: {}, messages: [] };
 
-        class OnlineSystem {
-            constructor() {
-                this.playerId = localStorage.getItem('player_id') || 'player_' + Math.random().toString(36).substr(2, 9);
-                localStorage.setItem('player_id', this.playerId);
-                this.db = null;
-                this.isConnected = false;
-                this.players = {};
-                this.messages = [];
-            }
+        async function initOnlineSystem() {
+            console.log('初始化在线系统...');
+            
+            // 获取现有数据
+            await fetchOnlineData();
+            
+            // 注册自己
+            await registerOnline();
+            
+            // 定时更新
+            setInterval(heartbeat, 30000);
+            setInterval(fetchOnlineData, 15000);
+            
+            // 初始显示
+            updateOnlineDisplay();
+        }
 
-            async init() {
-                try {
-                    if (typeof firebase !== 'undefined') {
-                        firebase.initializeApp(firebaseConfig);
-                        this.db = firebase.database();
-                        this.isConnected = true;
-                        
-                        this.db.ref('.info/connected').on('value', (snap) => {
-                            if (snap.val() === true) this.onConnect();
-                            else this.isConnected = false;
-                        });
+        async function fetchOnlineData() {
+            try {
+                const res = await fetch(API_URL + '/' + BIN_ID + '/latest');
+                const data = await res.json();
+                onlineSystem.players = data.record || {};
+                
+                // 清理2分钟不活跃的玩家
+                const now = Date.now();
+                Object.keys(onlineSystem.players).forEach(id => {
+                    if (now - (onlineSystem.players[id].lastSeen || 0) > 120000) {
+                        delete onlineSystem.players[id];
                     }
-                } catch (e) {
-                    console.log('Firebase 初始化失败，使用离线模式');
-                }
-                this.updateDisplay();
-            }
-
-            async onConnect() {
-                this.registerPlayer();
-                this.db.ref('players').on('value', (snap) => {
-                    this.players = snap.val() || {};
-                    this.updateDisplay();
                 });
-                this.db.ref('messages').limitToLast(50).on('value', (snap) => {
-                    this.messages = snap.val() ? Object.values(snap.val()) : [];
-                    this.updateChatDisplay();
-                });
-                this.db.ref('players/' + this.playerId).onDisconnect().remove();
-                setInterval(() => this.heartbeat(), 30000);
+                
+                updateOnlineDisplay();
+            } catch (e) {
+                console.log('获取在线数据失败:', e);
             }
-
-            async registerPlayer() {
-                if (!this.db) return;
-                this.db.ref('players/' + this.playerId).set({
-                    name: gameState.name || '匿名道友',
-                    avatar: gameState.avatar || '🦊',
-                    realm: gameState.realm || 0,
-                    realmName: gameState.realmName || '爬虫小子',
-                    cultivation: Math.floor(gameState.cultivation) || 0,
-                    lastSeen: Date.now()
-                });
-            }
-
-            async heartbeat() {
-                if (!this.db) return;
-                this.db.ref('players/' + this.playerId).update({
-                    name: gameState.name,
-                    cultivation: Math.floor(gameState.cultivation),
-                    lastSeen: Date.now()
-                });
-            }
-
-            async sendMessage(text) {
-                if (!text.trim() || !this.db) return;
-                this.db.ref('messages').push({
-                    sender: gameState.name,
-                    avatar: gameState.avatar,
-                    text: text.substring(0, 100),
-                    time: Date.now()
-                });
-            }
-
-            updateDisplay() {
-                const countEl = document.getElementById('headerOnlineCount');
-                if (countEl) {
-                    const online = Object.keys(this.players).length || 1;
-                    countEl.textContent = online;
-                }
-            }
-
-            updateChatDisplay() {
-                const chatEl = document.getElementById('chatMessages');
-                if (!chatEl || !this.messages.length) return;
-                chatEl.innerHTML = this.messages.slice(-20).map(m => 
-                    '<div class="chat-msg">' + m.avatar + ' <b>' + m.sender + ':</b> ' + m.text + '</div>'
-                ).join('');
-                chatEl.scrollTop = chatEl.scrollHeight;
+            
+            try {
+                const res = await fetch(API_URL + '/' + MSG_BIN + '/latest');
+                const data = await res.json();
+                onlineSystem.messages = data.record || [];
+                updateChatDisplay();
+            } catch (e) {
+                console.log('获取消息失败:', e);
             }
         }
 
-        let onlineSystem = null;
-        function initOnlineSystem() {
-            onlineSystem = new OnlineSystem();
-            onlineSystem.init();
+        async function registerOnline() {
+            onlineSystem.players[playerId] = {
+                name: gameState.name || '匿名道友',
+                avatar: gameState.avatar || '🦊',
+                realm: gameState.realm || 0,
+                realmName: gameState.realmName || '爬虫小子',
+                cultivation: Math.floor(gameState.cultivation) || 0,
+                lastSeen: Date.now()
+            };
+            await saveOnlineData();
         }
-        function sendChatMessage() {
+
+        async function heartbeat() {
+            if (onlineSystem.players[playerId]) {
+                onlineSystem.players[playerId].name = gameState.name;
+                onlineSystem.players[playerId].cultivation = Math.floor(gameState.cultivation);
+                onlineSystem.players[playerId].realmName = gameState.realmName;
+                onlineSystem.players[playerId].lastSeen = Date.now();
+            }
+            await saveOnlineData();
+            await fetchOnlineData();
+        }
+
+        async function saveOnlineData() {
+            try {
+                await fetch(API_URL + '/' + BIN_ID, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(onlineSystem.players)
+                });
+            } catch (e) {
+                console.log('保存在线数据失败:', e);
+            }
+        }
+
+        async function sendChatMessage() {
             const input = document.getElementById('chatInput');
-            if (input && onlineSystem) {
-                onlineSystem.sendMessage(input.value);
-                input.value = '';
+            if (!input) return;
+            
+            const text = input.value.trim();
+            if (!text) return;
+            
+            onlineSystem.messages.push({
+                sender: gameState.name || '匿名道友',
+                avatar: gameState.avatar || '🦊',
+                text: text.substring(0, 100),
+                time: Date.now()
+            });
+            
+            // 只保留最近100条
+            if (onlineSystem.messages.length > 100) {
+                onlineSystem.messages = onlineSystem.messages.slice(-100);
             }
+            
+            try {
+                await fetch(API_URL + '/' + MSG_BIN, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(onlineSystem.messages)
+                });
+            } catch (e) {
+                console.log('发送消息失败:', e);
+            }
+            
+            input.value = '';
+            updateChatDisplay();
+        }
+
+        function updateOnlineDisplay() {
+            const countEl = document.getElementById('headerOnlineCount');
+            if (countEl) {
+                const count = Object.keys(onlineSystem.players).length || 1;
+                countEl.textContent = count;
+            }
+        }
+
+        function updateChatDisplay() {
+            const chatEl = document.getElementById('chatMessages');
+            if (!chatEl) return;
+            
+            const msgs = onlineSystem.messages.slice(-30);
+            chatEl.innerHTML = msgs.map(m => 
+                '<div style="padding:2px;font-size:12px;">' + m.avatar + ' <b>' + m.sender + ':</b> ' + m.text + '</div>'
+            ).join('');
+            chatEl.scrollTop = chatEl.scrollHeight;
+        }
+        });
+            
+            input.value = '';
         }
 
 window.onload = init;
 
+        
         window.switchActivity = function(type) {
             // 检查境界是否解锁
             if (!isFeatureUnlocked(type)) {
