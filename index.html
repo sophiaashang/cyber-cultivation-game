@@ -10197,7 +10197,7 @@ async function goOnline(){sb=supabase.createClient(SUPABASE_URL,SUPABASE_KEY);se
 async function sync(){if(!sb||typeof gameState==='undefined')return;await sb.from('players').upsert({id:pid,name:gameState.name||'道友',avatar:gameState.avatar||'🦊',realm:gameState.realmName||'爬虫小子',cultivation:Math.floor(gameState.cultivation||0),last_seen:Date.now()});const{data,count}=await sb.from('players').select('name,avatar,realm,cultivation',{count:'exact'}).gte('last_seen',Date.now()-300000).order('cultivation',{ascending:false});document.getElementById('headerOnlineCount').textContent=count||0;document.getElementById('onlineCount').textContent=count||0;window.onlinePlayers=data||[];}
 
 
-function toggleOnlinePanel() {
+window.toggleOnlinePanel = function() {
     const panel = document.getElementById('onlinePanel');
     if (panel) {
         panel.classList.toggle('collapsed');
@@ -10207,7 +10207,7 @@ function toggleOnlinePanel() {
     }
 }
 
-function updateOnlinePanelList() {
+window.updateOnlinePanelList = function() {
     const list = window.onlinePlayers || [];
     const listEl = document.getElementById('onlineList');
     if (!listEl) return;
