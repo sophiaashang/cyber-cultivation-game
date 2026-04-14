@@ -1,10 +1,20 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<script src="https://lf-cdn.coze.cn/obj/unpkg/coze-space/page-editor-general-web/0.1.0-alpha.274555/dist/umd/index.js"></script><script src="https://lf-cdn.coze.cn/obj/unpkg/coze-webapp/console-bridge/0.0.1-alpha.b2eb33/dist/index.js"></script><script src="https://lf-cdn.coze.cn/obj/unpkg/coze-webapp/history-bridge/0.0.1-alpha.9e64d9/dist/index.min.js"></script><head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!DOCTYPE html><html lang="zh-CN"><head><!-- WebPro SDK -->
+<script>
+(function(n,e,r,t,a,o,s,i,c,l,f,m,p,u){o="precollect";s="getAttribute";i="addEventListener";c="PerformanceObserver";l=function(e){f=[].slice.call(arguments);f.push(Date.now(),location.href);(e==o?l.p.a:l.q).push(f)};l.q=[];l.p={a:[]};n[a]=l;m=document.createElement("script");m.src=r+"?aid="+t+"&globalName="+a;m.crossOrigin="anonymous";e.getElementsByTagName("head")[0].appendChild(m);if(i in n){l.pcErr=function(e){e=e||n.event;p=e.target||e.srcElement;if(p instanceof Element||p instanceof HTMLElement){n[a](o,"st",{tagName:p.tagName,url:p[s]("href")||p[s]("src")})}else{n[a](o,"err",e.error||e.message)}};l.pcRej=function(e){e=e||n.event;n[a](o,"reject",e.reason||e.detail&&e.detail.reason)};n[i]("error",l.pcErr,true);n[i]("unhandledrejection",l.pcRej,true)}if("PerformanceLongTaskTiming"in n){u=l.pp={entries:[]};u.observer=new PerformanceObserver(function(e){u.entries=u.entries.concat(e.getEntries())});u.observer.observe({entryTypes:["longtask"]})}})(window,document,"https://apm.volccdn.com/mars-web/apmplus/web/browser.cn.js",1001891,"apmPlus");
+</script>
+<script>
+window.apmPlus("context.set", "project_id", "7627376619937890356");
+window.apmPlus("init",{
+  aid: 1001891,
+  token: '26a8704bd4d34b1698085c787d0c95d0'
+});
+window.apmPlus("start");
+</script>
+
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>赛博修仙·挂机摆烂</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&amp;family=Orbitron:wght@400;700&amp;display=swap" rel="stylesheet"/>
     <style>
         * {
             margin: 0;
@@ -3509,7 +3519,7 @@
                         </div>
                     </div>
                     <button class="activity-btn" id="activityBtn" onclick="boostActivity()">⚡ 加速修炼</button>
-                    <button class="energy-infuse-btn" id="energyInfuseBtn" onclick="infuseEnergy()" disabled>⚡ 能量灌注 (10能量 → +50修为)</button>
+                    <button class="energy-infuse-btn" id="energyInfuseBtn" onclick="infuseEnergy()" disabled="">⚡ 能量灌注 (10能量 → +50修为)</button>
                 </div>
             </div>
 
@@ -3522,7 +3532,7 @@
                     <div class="sect-info-title">🏰 当前宗门</div>
                     <div style="text-align: center; margin-bottom: 10px;">
                         <span id="currentSectIcon" style="font-size: 36px;"></span>
-                        <div id="currentSectName" style="font-family: 'Orbitron', sans-serif; color: var(--neon-cyan); font-size: 14px;"></div>
+                        <div id="currentSectName" style="font-family: &#39;Orbitron&#39;, sans-serif; color: var(--neon-cyan); font-size: 14px;"></div>
                     </div>
                     <div class="sect-contribution">
                         <span class="sect-contribution-label">贡献度</span>
@@ -3566,23 +3576,23 @@
             <div class="panel-title">🎮 活动中心</div>
             
             <div class="activity-buttons">
-                <div class="activity-btn-item active" id="btn-meditation" onclick="switchActivity('meditation')">
+                <div class="activity-btn-item active" id="btn-meditation" onclick="switchActivity(&#39;meditation&#39;)">
                     <div class="btn-icon">🧘</div>
                     <div class="btn-label">修炼</div>
                 </div>
-                <div class="activity-btn-item" id="btn-fishing" onclick="switchActivity('fishing')">
+                <div class="activity-btn-item" id="btn-fishing" onclick="switchActivity(&#39;fishing&#39;)">
                     <div class="btn-icon">🎣</div>
                     <div class="btn-label">钓鱼</div>
                 </div>
-                <div class="activity-btn-item" id="btn-farming" onclick="switchActivity('farming')">
+                <div class="activity-btn-item" id="btn-farming" onclick="switchActivity(&#39;farming&#39;)">
                     <div class="btn-icon">🌱</div>
                     <div class="btn-label">种菜</div>
                 </div>
-                <div class="activity-btn-item" id="btn-mining" onclick="switchActivity('mining')">
+                <div class="activity-btn-item" id="btn-mining" onclick="switchActivity(&#39;mining&#39;)">
                     <div class="btn-icon">⛏️</div>
                     <div class="btn-label">挖矿</div>
                 </div>
-                <div class="activity-btn-item" id="btn-monster" onclick="switchActivity('monster')">
+                <div class="activity-btn-item" id="btn-monster" onclick="switchActivity(&#39;monster&#39;)">
                     <div class="btn-icon">👹</div>
                     <div class="btn-label">打怪</div>
                 </div>
@@ -3608,10 +3618,10 @@
         <!-- 底部选项卡 -->
         <div class="panel bottom-panel">
             <div class="tabs">
-                <button class="tab active" onclick="switchTab('inventory')">🎒 背包</button>
-                <button class="tab" onclick="switchTab('achievements')">🏆 成就</button>
-                <button class="tab" onclick="switchTab('logs')">📜 日志</button>
-                <button class="tab" onclick="switchTab('settings')">⚙️ 设置</button>
+                <button class="tab active" onclick="switchTab(&#39;inventory&#39;)">🎒 背包</button>
+                <button class="tab" onclick="switchTab(&#39;achievements&#39;)">🏆 成就</button>
+                <button class="tab" onclick="switchTab(&#39;logs&#39;)">📜 日志</button>
+                <button class="tab" onclick="switchTab(&#39;settings&#39;)">⚙️ 设置</button>
             </div>
 
             <div class="tab-content active" id="tab-inventory">
@@ -3635,11 +3645,11 @@
                 <div class="settings-list">
                     <div class="setting-item">
                         <span class="setting-label">🎵 音乐</span>
-                        <div class="toggle-switch active" id="musicToggle" onclick="toggleSetting('music')"></div>
+                        <div class="toggle-switch active" id="musicToggle" onclick="toggleSetting(&#39;music&#39;)"></div>
                     </div>
                     <div class="setting-item">
                         <span class="setting-label">🔊 音效</span>
-                        <div class="toggle-switch active" id="soundToggle" onclick="toggleSetting('sound')"></div>
+                        <div class="toggle-switch active" id="soundToggle" onclick="toggleSetting(&#39;sound&#39;)"></div>
                     </div>
                     <div class="setting-item">
                         <span class="setting-label">📤 导出存档</span>
@@ -3687,7 +3697,7 @@
                     <div class="channel-title">💬 世界频道</div>
                     <div class="channel-messages" id="channelMessages"></div>
                     <div class="channel-input-area">
-                        <input type="text" class="channel-input" id="channelInput" placeholder="说点什么..." onkeypress="if(event.key==='Enter')sendChatMsg()">
+                        <input type="text" class="channel-input" id="channelInput" placeholder="说点什么..." onkeypress="if(event.key===&#39;Enter&#39;)sendChatMsg()"/>
                         <button class="channel-send-btn" onclick="sendChatMsg()">发送</button>
                     </div>
                 </div>
@@ -3714,7 +3724,7 @@
     <!-- 改名弹窗 -->
     <div class="modal" id="nameModal">
         <div class="modal-title">✏️ 修改昵称</div>
-        <input type="text" class="modal-input" id="nameInput" placeholder="请输入新昵称" maxlength="10">
+        <input type="text" class="modal-input" id="nameInput" placeholder="请输入新昵称" maxlength="10"/>
         <div class="modal-buttons">
             <button class="modal-btn cancel" onclick="closeAllModals()">取消</button>
             <button class="modal-btn confirm" onclick="saveName()">确定</button>
@@ -3725,7 +3735,7 @@
     <div class="modal" id="firstNameModal">
         <div class="modal-title">🎮 欢迎来到赛博修仙世界！</div>
         <p style="color: var(--text-secondary); text-align: center; margin-bottom: 15px;">请输入你的修仙者名号</p>
-        <input type="text" class="modal-input" id="firstNameInput" placeholder="输入2-10个字符的昵称" maxlength="10" onkeypress="if(event.key==='Enter')confirmFirstName()">
+        <input type="text" class="modal-input" id="firstNameInput" placeholder="输入2-10个字符的昵称" maxlength="10" onkeypress="if(event.key===&#39;Enter&#39;)confirmFirstName()"/>
         <div class="modal-buttons">
             <button class="modal-btn confirm" onclick="confirmFirstName()" style="width: 100%;">踏入修仙之路</button>
         </div>
@@ -3880,7 +3890,7 @@
     <div id="floatingTextContainer"></div>
 
     <!-- 隐藏的文件输入 -->
-    <input type="file" id="fileInput" accept=".json" style="display: none;" onchange="handleFileImport(event)">
+    <input type="file" id="fileInput" accept=".json" style="display: none;" onchange="handleFileImport(event)"/>
 
     <script>
         // ==================== 音频系统 ====================
@@ -10510,19 +10520,13 @@ function checkRealmUp() {
         };
     </script>
     <!-- 点击开始提示 -->
-    <div id="startPrompt" class="modal-overlay" style="display: none !important; align-items: center; justify-content: center; background: rgba(0,0,0,0.9); z-index: 2000; cursor: pointer; position: fixed; top: 0; left: 0; right: 0; bottom: 0;">
-        <div style="text-align: center; padding: 40px; min-width: 300px;">
-            <div style="font-size: 60px; margin-bottom: 20px;">🎮</div>
-            <h2 style="color: #00ff41; font-family: 'Orbitron', sans-serif; margin-bottom: 15px; font-size: 24px;">点击任意位置开始游戏</h2>
+            <h2 style="color: #00ff41; font-family: &#39;Orbitron&#39;, sans-serif; margin-bottom: 15px; font-size: 24px;">点击任意位置开始游戏</h2>
             <p style="color: #888; font-size: 14px;">为了确保音频正常工作，请先点击屏幕</p>
         </div>
     </div>
     <script>
         // 确保AudioContext在用户首次点击时正确初始化
-        const startPrompt = document.getElementById('startPrompt');
-        if (startPrompt) {
             const startGame = function() {
-                startPrompt.style.display = 'none';
                 // 初始化音频
                 audioManager.init();
                 // 尝试恢复音频上下文
@@ -10538,6 +10542,6 @@ function checkRealmUp() {
             document.addEventListener('touchstart', startGame, { once: true });
         }
     </script>
-</body>
-</html>
- 
+
+
+</body></html>
