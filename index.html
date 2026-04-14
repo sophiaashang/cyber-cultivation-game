@@ -3410,6 +3410,9 @@
     <script>
     // 注意：版本检查已移到 init() 函数末尾执行，避免影响存档加载
     </script>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 </head>
 <body>
     <!-- 右上角在线道友显示 -->
@@ -10125,7 +10128,121 @@ function checkRealmUp() {
         // ==================== 真实联机系统 ====================
         
         // 数据库配置
-        window.onload = init;
+        
+        // ==================== 在线系统 (Firebase) ====================
+        const firebaseConfig = {
+            apiKey: "AIzaSyDemo-REPLACE-WITH-YOUR-KEY",
+            authDomain: "your-project.firebaseapp.com",
+            databaseURL: "https://your-project-default-rtdb.firebaseio.com",
+            projectId: "your-project",
+            storageBucket: "your-project.appspot.com"
+        };
+
+        class OnlineSystem {
+            constructor() {
+                this.playerId = localStorage.getItem('player_id') || 'player_' + Math.random().toString(36).substr(2, 9);
+                localStorage.setItem('player_id', this.playerId);
+                this.db = null;
+                this.isConnected = false;
+                this.players = {};
+                this.messages = [];
+            }
+
+            async init() {
+                try {
+                    if (typeof firebase !== 'undefined') {
+                        firebase.initializeApp(firebaseConfig);
+                        this.db = firebase.database();
+                        this.isConnected = true;
+                        
+                        this.db.ref('.info/connected').on('value', (snap) => {
+                            if (snap.val() === true) this.onConnect();
+                            else this.isConnected = false;
+                        });
+                    }
+                } catch (e) {
+                    console.log('Firebase 初始化失败，使用离线模式');
+                }
+                this.updateDisplay();
+            }
+
+            async onConnect() {
+                this.registerPlayer();
+                this.db.ref('players').on('value', (snap) => {
+                    this.players = snap.val() || {};
+                    this.updateDisplay();
+                });
+                this.db.ref('messages').limitToLast(50).on('value', (snap) => {
+                    this.messages = snap.val() ? Object.values(snap.val()) : [];
+                    this.updateChatDisplay();
+                });
+                this.db.ref('players/' + this.playerId).onDisconnect().remove();
+                setInterval(() => this.heartbeat(), 30000);
+            }
+
+            async registerPlayer() {
+                if (!this.db) return;
+                this.db.ref('players/' + this.playerId).set({
+                    name: gameState.name || '匿名道友',
+                    avatar: gameState.avatar || '🦊',
+                    realm: gameState.realm || 0,
+                    realmName: gameState.realmName || '爬虫小子',
+                    cultivation: Math.floor(gameState.cultivation) || 0,
+                    lastSeen: Date.now()
+                });
+            }
+
+            async heartbeat() {
+                if (!this.db) return;
+                this.db.ref('players/' + this.playerId).update({
+                    name: gameState.name,
+                    cultivation: Math.floor(gameState.cultivation),
+                    lastSeen: Date.now()
+                });
+            }
+
+            async sendMessage(text) {
+                if (!text.trim() || !this.db) return;
+                this.db.ref('messages').push({
+                    sender: gameState.name,
+                    avatar: gameState.avatar,
+                    text: text.substring(0, 100),
+                    time: Date.now()
+                });
+            }
+
+            updateDisplay() {
+                const countEl = document.getElementById('headerOnlineCount');
+                if (countEl) {
+                    const online = Object.keys(this.players).length || 1;
+                    countEl.textContent = online;
+                }
+            }
+
+            updateChatDisplay() {
+                const chatEl = document.getElementById('chatMessages');
+                if (!chatEl || !this.messages.length) return;
+                chatEl.innerHTML = this.messages.slice(-20).map(m => 
+                    '<div class="chat-msg">' + m.avatar + ' <b>' + m.sender + ':</b> ' + m.text + '</div>'
+                ).join('');
+                chatEl.scrollTop = chatEl.scrollHeight;
+            }
+        }
+
+        let onlineSystem = null;
+        function initOnlineSystem() {
+            onlineSystem = new OnlineSystem();
+            onlineSystem.init();
+        }
+        function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            if (input && onlineSystem) {
+                onlineSystem.sendMessage(input.value);
+                input.value = '';
+            }
+        }
+
+window.onload = init;
 
         window.switchActivity = function(type) {
             // 检查境界是否解锁
