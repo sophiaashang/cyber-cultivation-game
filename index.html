@@ -1,20 +1,10 @@
-<!DOCTYPE html><html lang="zh-CN"><head><!-- WebPro SDK -->
-<script>
-(function(n,e,r,t,a,o,s,i,c,l,f,m,p,u){o="precollect";s="getAttribute";i="addEventListener";c="PerformanceObserver";l=function(e){f=[].slice.call(arguments);f.push(Date.now(),location.href);(e==o?l.p.a:l.q).push(f)};l.q=[];l.p={a:[]};n[a]=l;m=document.createElement("script");m.src=r+"?aid="+t+"&globalName="+a;m.crossOrigin="anonymous";e.getElementsByTagName("head")[0].appendChild(m);if(i in n){l.pcErr=function(e){e=e||n.event;p=e.target||e.srcElement;if(p instanceof Element||p instanceof HTMLElement){n[a](o,"st",{tagName:p.tagName,url:p[s]("href")||p[s]("src")})}else{n[a](o,"err",e.error||e.message)}};l.pcRej=function(e){e=e||n.event;n[a](o,"reject",e.reason||e.detail&&e.detail.reason)};n[i]("error",l.pcErr,true);n[i]("unhandledrejection",l.pcRej,true)}if("PerformanceLongTaskTiming"in n){u=l.pp={entries:[]};u.observer=new PerformanceObserver(function(e){u.entries=u.entries.concat(e.getEntries())});u.observer.observe({entryTypes:["longtask"]})}})(window,document,"https://apm.volccdn.com/mars-web/apmplus/web/browser.cn.js",1001891,"apmPlus");
-</script>
-<script>
-window.apmPlus("context.set", "project_id", "7627376619937890356");
-window.apmPlus("init",{
-  aid: 1001891,
-  token: '26a8704bd4d34b1698085c787d0c95d0'
-});
-window.apmPlus("start");
-</script>
-
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<!DOCTYPE html>
+<html lang="zh-CN">
+<script src="https://lf-cdn.coze.cn/obj/unpkg/coze-space/page-editor-general-web/0.1.0-alpha.274555/dist/umd/index.js"></script><script src="https://lf-cdn.coze.cn/obj/unpkg/coze-webapp/console-bridge/0.0.1-alpha.b2eb33/dist/index.js"></script><script src="https://lf-cdn.coze.cn/obj/unpkg/coze-webapp/history-bridge/0.0.1-alpha.9e64d9/dist/index.min.js"></script><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>赛博修仙·挂机摆烂</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&amp;family=Orbitron:wght@400;700&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&family=Orbitron:wght@400;700&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -3519,7 +3509,7 @@ window.apmPlus("start");
                         </div>
                     </div>
                     <button class="activity-btn" id="activityBtn" onclick="boostActivity()">⚡ 加速修炼</button>
-                    <button class="energy-infuse-btn" id="energyInfuseBtn" onclick="infuseEnergy()" disabled="">⚡ 能量灌注 (10能量 → +50修为)</button>
+                    <button class="energy-infuse-btn" id="energyInfuseBtn" onclick="infuseEnergy()" disabled>⚡ 能量灌注 (10能量 → +50修为)</button>
                 </div>
             </div>
 
@@ -3532,7 +3522,7 @@ window.apmPlus("start");
                     <div class="sect-info-title">🏰 当前宗门</div>
                     <div style="text-align: center; margin-bottom: 10px;">
                         <span id="currentSectIcon" style="font-size: 36px;"></span>
-                        <div id="currentSectName" style="font-family: &#39;Orbitron&#39;, sans-serif; color: var(--neon-cyan); font-size: 14px;"></div>
+                        <div id="currentSectName" style="font-family: 'Orbitron', sans-serif; color: var(--neon-cyan); font-size: 14px;"></div>
                     </div>
                     <div class="sect-contribution">
                         <span class="sect-contribution-label">贡献度</span>
@@ -3576,23 +3566,23 @@ window.apmPlus("start");
             <div class="panel-title">🎮 活动中心</div>
             
             <div class="activity-buttons">
-                <div class="activity-btn-item active" id="btn-meditation" onclick="switchActivity(&#39;meditation&#39;)">
+                <div class="activity-btn-item active" id="btn-meditation" onclick="switchActivity('meditation')">
                     <div class="btn-icon">🧘</div>
                     <div class="btn-label">修炼</div>
                 </div>
-                <div class="activity-btn-item" id="btn-fishing" onclick="switchActivity(&#39;fishing&#39;)">
+                <div class="activity-btn-item" id="btn-fishing" onclick="switchActivity('fishing')">
                     <div class="btn-icon">🎣</div>
                     <div class="btn-label">钓鱼</div>
                 </div>
-                <div class="activity-btn-item" id="btn-farming" onclick="switchActivity(&#39;farming&#39;)">
+                <div class="activity-btn-item" id="btn-farming" onclick="switchActivity('farming')">
                     <div class="btn-icon">🌱</div>
                     <div class="btn-label">种菜</div>
                 </div>
-                <div class="activity-btn-item" id="btn-mining" onclick="switchActivity(&#39;mining&#39;)">
+                <div class="activity-btn-item" id="btn-mining" onclick="switchActivity('mining')">
                     <div class="btn-icon">⛏️</div>
                     <div class="btn-label">挖矿</div>
                 </div>
-                <div class="activity-btn-item" id="btn-monster" onclick="switchActivity(&#39;monster&#39;)">
+                <div class="activity-btn-item" id="btn-monster" onclick="switchActivity('monster')">
                     <div class="btn-icon">👹</div>
                     <div class="btn-label">打怪</div>
                 </div>
@@ -3618,10 +3608,10 @@ window.apmPlus("start");
         <!-- 底部选项卡 -->
         <div class="panel bottom-panel">
             <div class="tabs">
-                <button class="tab active" onclick="switchTab(&#39;inventory&#39;)">🎒 背包</button>
-                <button class="tab" onclick="switchTab(&#39;achievements&#39;)">🏆 成就</button>
-                <button class="tab" onclick="switchTab(&#39;logs&#39;)">📜 日志</button>
-                <button class="tab" onclick="switchTab(&#39;settings&#39;)">⚙️ 设置</button>
+                <button class="tab active" onclick="switchTab('inventory')">🎒 背包</button>
+                <button class="tab" onclick="switchTab('achievements')">🏆 成就</button>
+                <button class="tab" onclick="switchTab('logs')">📜 日志</button>
+                <button class="tab" onclick="switchTab('settings')">⚙️ 设置</button>
             </div>
 
             <div class="tab-content active" id="tab-inventory">
@@ -3645,11 +3635,11 @@ window.apmPlus("start");
                 <div class="settings-list">
                     <div class="setting-item">
                         <span class="setting-label">🎵 音乐</span>
-                        <div class="toggle-switch active" id="musicToggle" onclick="toggleSetting(&#39;music&#39;)"></div>
+                        <div class="toggle-switch active" id="musicToggle" onclick="toggleSetting('music')"></div>
                     </div>
                     <div class="setting-item">
                         <span class="setting-label">🔊 音效</span>
-                        <div class="toggle-switch active" id="soundToggle" onclick="toggleSetting(&#39;sound&#39;)"></div>
+                        <div class="toggle-switch active" id="soundToggle" onclick="toggleSetting('sound')"></div>
                     </div>
                     <div class="setting-item">
                         <span class="setting-label">📤 导出存档</span>
@@ -3697,7 +3687,7 @@ window.apmPlus("start");
                     <div class="channel-title">💬 世界频道</div>
                     <div class="channel-messages" id="channelMessages"></div>
                     <div class="channel-input-area">
-                        <input type="text" class="channel-input" id="channelInput" placeholder="说点什么..." onkeypress="if(event.key===&#39;Enter&#39;)sendChatMsg()"/>
+                        <input type="text" class="channel-input" id="channelInput" placeholder="说点什么..." onkeypress="if(event.key==='Enter')sendChatMsg()">
                         <button class="channel-send-btn" onclick="sendChatMsg()">发送</button>
                     </div>
                 </div>
@@ -3724,7 +3714,7 @@ window.apmPlus("start");
     <!-- 改名弹窗 -->
     <div class="modal" id="nameModal">
         <div class="modal-title">✏️ 修改昵称</div>
-        <input type="text" class="modal-input" id="nameInput" placeholder="请输入新昵称" maxlength="10"/>
+        <input type="text" class="modal-input" id="nameInput" placeholder="请输入新昵称" maxlength="10">
         <div class="modal-buttons">
             <button class="modal-btn cancel" onclick="closeAllModals()">取消</button>
             <button class="modal-btn confirm" onclick="saveName()">确定</button>
@@ -3735,7 +3725,7 @@ window.apmPlus("start");
     <div class="modal" id="firstNameModal">
         <div class="modal-title">🎮 欢迎来到赛博修仙世界！</div>
         <p style="color: var(--text-secondary); text-align: center; margin-bottom: 15px;">请输入你的修仙者名号</p>
-        <input type="text" class="modal-input" id="firstNameInput" placeholder="输入2-10个字符的昵称" maxlength="10" onkeypress="if(event.key===&#39;Enter&#39;)confirmFirstName()"/>
+        <input type="text" class="modal-input" id="firstNameInput" placeholder="输入2-10个字符的昵称" maxlength="10" onkeypress="if(event.key==='Enter')confirmFirstName()">
         <div class="modal-buttons">
             <button class="modal-btn confirm" onclick="confirmFirstName()" style="width: 100%;">踏入修仙之路</button>
         </div>
@@ -3890,7 +3880,7 @@ window.apmPlus("start");
     <div id="floatingTextContainer"></div>
 
     <!-- 隐藏的文件输入 -->
-    <input type="file" id="fileInput" accept=".json" style="display: none;" onchange="handleFileImport(event)"/>
+    <input type="file" id="fileInput" accept=".json" style="display: none;" onchange="handleFileImport(event)">
 
     <script>
         // ==================== 音频系统 ====================
@@ -10119,380 +10109,8 @@ function checkRealmUp() {
         // ==================== 真实联机系统 ====================
         
         // 数据库配置
-        const JSONBLOB_URL = 'https://jsonblob.com/api/jsonBlob/019d8b12-5fdf-7a66-8aca-1367eced1946';
-        
-        // 玩家ID
-        let playerId = localStorage.getItem('player_id');
-        
-        // 数据存储
-        let onlinePlayers = [];
-        let allMessages = [];
-        let dbData = { players: [], messages: [] };
-        let isOnline = false;
-        let timers = [];
-        
-        // 初始化真实联机系统
-        async function initOnlineSystem() {
-            console.log('正在初始化联机系统...');
-            
-            // 首次注册
-            await registerPlayer();
-            
-            // 首次获取数据
-            await refreshOnlinePlayers();
-            await refreshMessages();
-            
-            // 定时任务
-            timers.push(setInterval(refreshOnlinePlayers, 30000));  // 每30秒刷新在线玩家
-            timers.push(setInterval(refreshMessages, 5000));        // 每5秒刷新消息
-            timers.push(setInterval(updatePlayerOnlineTime, 60000)); // 每60秒心跳更新
-            
-            // 右上角在线道友数字（只统计真实玩家）
-            const updateHeaderOnline = () => {
-                const el = document.getElementById('headerOnlineCount');
-                if (el) {
-                    const realOnline = dbData.players.filter(p => (Date.now() - (p.lastOnline || 0)) < 5 * 60 * 1000).length;
-                    el.textContent = realOnline;
-                }
-            };
-            updateHeaderOnline();
-            timers.push(setInterval(updateHeaderOnline, 30000));
-            
-            console.log('联机系统初始化完成，在线状态:', isOnline ? '已连接' : '离线模式');
-        }
-        
-        // 刷新在线玩家
-        async function refreshOnlinePlayers() {
-            await fetchDbData();
-            
-            const now = Date.now();
-            const fiveMinutes = 5 * 60 * 1000;
-            
-            // 只过滤真实在线玩家（5分钟内有心跳，排除自己）
-            onlinePlayers = dbData.players.filter(p => {
-                return (now - (p.lastOnline || 0)) < fiveMinutes && p.id !== playerId;
-            });
-            
-            updateOnlineList();
-        }
-        
-        // 注册/更新玩家信息
-        async function registerPlayer() {
-            if (!playerId) {
-                playerId = 'p_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
-                localStorage.setItem('player_id', playerId);
-                console.log('生成新玩家ID:', playerId);
-            }
-            
-            const currentPlayer = {
-                id: playerId,
-                name: gameState.name || '无名修士',
-                avatar: gameState.avatar || '🦊',
-                realm: gameState.realm || 0,
-                realmName: gameState.realmName || '爬虫小子',
-                cultivation: Math.floor(gameState.cultivation) || 0,
-                lastOnline: Date.now()
-            };
-            
-            // 获取最新数据
-            await fetchDbData();
-            
-            // 更新或添加玩家
-            const existingIndex = dbData.players.findIndex(p => p.id === playerId);
-            if (existingIndex >= 0) {
-                dbData.players[existingIndex] = currentPlayer;
-            } else {
-                dbData.players.push(currentPlayer);
-            }
-            
-            // 保存
-            await saveDbData();
-            console.log('玩家信息已同步:', currentPlayer.name);
-        }
-            
-            // 获取最新数据
-            await fetchDbData();
-            
-            // 更新或添加玩家
-            const existingIndex = dbData.players.findIndex(p => p.id === playerId);
-            if (existingIndex >= 0) {
-                dbData.players[existingIndex] = currentPlayer;
-            } else {
-                dbData.players.push(currentPlayer);
-            }
-            
-            // 保存
-            await saveDbData();
-            console.log('玩家信息已同步:', currentPlayer.name);
-        }
-        
-        // 获取数据库
-        async function fetchDbData() {
-            try {
-                const response = await fetch(JSONBLOB_URL, {
-                    method: 'GET',
-                    headers: { 'Accept': 'application/json' }
-                });
-                
-                if (response.ok) {
-                    const data = await response.json();
-                    dbData.players = Array.isArray(data.players) ? data.players : [];
-                    dbData.messages = Array.isArray(data.messages) ? data.messages : [];
-                    isOnline = true;
-                    updateConnectionStatus(true);
-                } else if (response.status === 404) {
-                    // 数据不存在，初始化
-                    await initDbData();
-                    isOnline = false;
-                    updateConnectionStatus(false);
-                } else {
-                    isOnline = false;
-                    updateConnectionStatus(false);
-                }
-            } catch (e) {
-                console.log('网络请求失败，进入离线模式:', e.message);
-                isOnline = false;
-                updateConnectionStatus(false);
-            }
-            return dbData;
-        }
-        
-        // 初始化数据库
-        async function initDbData() {
-            try {
-                const response = await fetch(JSONBLOB_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ players: [], messages: [] })
-                });
-                if (response.ok) {
-                    console.log('数据库初始化成功');
-                }
-            } catch (e) {
-                console.log('初始化数据库失败:', e.message);
-            }
-        }
-        
-        // 保存数据库
-        async function saveDbData() {
-            if (!isOnline) return false;
-            try {
-                const response = await fetch(JSONBLOB_URL, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(dbData)
-                });
-                return response.ok;
-            } catch (e) {
-                console.log('保存数据失败，进入离线模式:', e.message);
-                isOnline = false;
-                updateConnectionStatus(false);
-                return false;
-            }
-        }
-        
-        // 更新连接状态显示
-        function updateConnectionStatus(online) {
-            const countEl = document.getElementById('onlineCount');
-            if (countEl) {
-                const currentText = countEl.textContent.replace(/\(.*\)/, '');
-                countEl.textContent = currentText + (online ? '' : '(离线)');
-            }
-        }
-        
-        // 心跳更新（每60秒）
-        async function updatePlayerOnlineTime() {
-            if (!playerId) return;
-            
-            await fetchDbData();
-            const player = dbData.players.find(p => p.id === playerId);
-            if (player) {
-                player.lastOnline = Date.now();
-                player.name = gameState.name || player.name;
-                player.avatar = gameState.avatar || player.avatar;
-                player.realm = gameState.realm || player.realm;
-                player.realmName = gameState.realmName || player.realmName;
-                player.cultivation = Math.floor(gameState.cultivation) || player.cultivation;
-                await saveDbData();
-            }
-        }
-        
-        // 发送消息
-        async function sendMessage(text) {
-            if (!text.trim()) return;
-            
-            const msg = {
-                id: playerId + '_' + Date.now(),
-                sender: gameState.name || '你',
-                avatar: gameState.avatar || '🦊',
-                message: text.trim().substring(0, 200), // 限制消息长度
-                time: Date.now(),
-                isSimulated: false
-            };
-            
-            await fetchDbData();
-            dbData.messages.push(msg);
-            // 保留最近50条
-            if (dbData.messages.length > 50) {
-                dbData.messages = dbData.messages.slice(-50);
-            }
-            await saveDbData();
-            allMessages = dbData.messages;
-            updateChannelMessages();
-        }
-        
-        // 刷新消息
-        async function refreshMessages() {
-            await fetchDbData();
-            allMessages = dbData.messages || [];
-            updateChannelMessages();
-        }
-        
-        // 更新在线列表UI
-        function updateOnlineList() {
-            const list = document.getElementById('onlineList');
-            const countEl = document.getElementById('onlineCount');
-            if (!list || !countEl) return;
-            
-            // 只显示真实在线玩家数量（不包含自己）
-            const onlineCount = onlinePlayers.length;
-            const statusText = isOnline ? '' : '(离线)';
-            
-            if (onlineCount === 0) {
-                countEl.textContent = '暂无在线道友';
-            } else {
-                countEl.textContent = onlineCount + '人在线' + statusText;
-            }
-            
-            if (onlinePlayers.length === 0) {
-                list.innerHTML = '<div class="online-empty">暂无其他道友在线</div>';
-            } else {
-                list.innerHTML = onlinePlayers.sort((a, b) => b.realm - a.realm).slice(0, 8).map(player => `
-                    <div class="online-player">
-                        <span class="status-dot"></span>
-                        <span class="player-avatar">${player.avatar}</span>
-                        <div class="player-info">
-                            <div class="player-name">${player.name}</div>
-                            <div class="player-realm">${player.realmName}</div>
-                        </div>
-                    </div>
-                `).join('');
-            }
-        }
-        
-        // 发送聊天消息
-        function sendChatMsg() {
-            const input = document.getElementById('channelInput');
-            if (!input) return;
-            const text = input.value.trim();
-            if (text) {
-                sendMessage(text);
-                input.value = '';
-            }
-        }
-        
-        // 更新频道消息UI
-        function updateChannelMessages() {
-            const container = document.getElementById('channelMessages');
-            if (!container) return;
-            
-            // 只显示真实消息
-            if (allMessages.length === 0) {
-                container.innerHTML = '<div class="channel-empty">暂无消息，快来发言吧~</div>';
-            } else {
-                const recentMessages = allMessages.slice(-8);
-                container.innerHTML = recentMessages.map(msg => {
-                    const time = new Date(msg.time).toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
-                    return `<div class="channel-msg"><span class="msg-time">[${time}]</span><span class="msg-sender">${msg.avatar} ${msg.sender}:</span>${msg.message}</div>`;
-                }).join('');
-            }
-            
-            container.scrollTop = container.scrollHeight;
-        }
-        
-        // 排行榜
-        function openRankModal() {
-            const rankList = document.getElementById('rankList');
-            if (!rankList) return;
-            
-            // 构建排行榜：真实玩家 + 当前玩家
-            const allPlayers = [
-                ...dbData.players.map(p => ({
-                    name: p.name,
-                    avatar: p.avatar,
-                    realm: p.realm,
-                    realmName: p.realmName,
-                    cultivation: p.cultivation,
-                    isPlayer: p.id === playerId,
-                    lastOnline: p.lastOnline
-                })),
-                {
-                    name: gameState.name || '你',
-                    avatar: gameState.avatar || '🦊',
-                    realm: gameState.realm || 0,
-                    realmName: gameState.realmName || '爬虫小子',
-                    cultivation: Math.floor(gameState.cultivation) || 0,
-                    isPlayer: true
-                }
-            ];
-            
-            // 按修为排序
-            const ranks = allPlayers
-                .filter((player, index, self) => 
-                    index === self.findIndex(p => p.name === player.name)
-                )
-                .sort((a, b) => b.cultivation - a.cultivation)
-                .slice(0, 15);
-            
-            rankList.innerHTML = ranks.map((player, index) => {
-                const rankClass = index === 0 ? 'gold' : index === 1 ? 'silver' : index === 2 ? 'bronze' : '';
-                return `<li class="rank-item ${player.isPlayer ? 'is-player' : ''}">
-                    <span class="rank-num ${rankClass}">${index + 1}</span>
-                    <span class="rank-avatar">${player.avatar}</span>
-                    <div class="rank-info">
-                        <div class="rank-name">${player.name} ${player.isPlayer ? '(你)' : ''}</div>
-                        <div class="player-realm">${player.realmName}</div>
-                    </div>
-                    <span class="rank-cultivation">${formatNumber(player.cultivation)}</span>
-                </li>`;
-            }).join('');
-            
-            document.getElementById('rankModal').style.display = 'block';
-            document.getElementById('modalOverlay').style.display = 'block';
-        }
-        
-        // 切换联机面板展开/收起
-        function toggleOnlinePanel() {
-            const panel = document.getElementById('onlinePanel');
-            panel.classList.toggle('collapsed');
-        }
-        
-        function closeRankModal() {
-            document.getElementById('rankModal').style.display = 'none';
-            document.getElementById('modalOverlay').style.display = 'none';
-        }
-        
-        // 版本检查函数（检查是否需要刷新页面加载新版本）
-        function checkVersion() {
-            const currentVersion = localStorage.getItem('game_version');
-            const newVersion = '20260414_0901'; // 每次更新改这个版本号
-            
-            if (currentVersion !== newVersion) {
-                console.log('检测到新版本，正在刷新...');
-                localStorage.setItem('game_version', newVersion);
-                // 先保存当前存档
-                saveGame();
-                // 延迟刷新，确保存档保存完成
-                setTimeout(() => {
-                    location.reload(true);
-                }, 100);
-            }
-        }
-
-        // 页面加载完成后初始化
         window.onload = init;
 
-        // 确保 switchActivity 在全局作用域可用
         window.switchActivity = function(type) {
             // 检查境界是否解锁
             if (!isFeatureUnlocked(type)) {
@@ -10519,26 +10137,5 @@ function checkRealmUp() {
             saveGame();
         };
     </script>
-    <!-- 点击开始提示 -->
-    
-    <script>
-        // 确保AudioContext在用户首次点击时正确初始化
-            const startGame = function() {
-                // 初始化音频
-                audioManager.init();
-                // 尝试恢复音频上下文
-                audioManager.resume();
-                // 如果音乐开启则播放
-                if (typeof gameState !== 'undefined' && gameState.settings && gameState.settings.music) {
-                    audioManager.startMusic();
-                }
-                document.removeEventListener('click', startGame);
-                document.removeEventListener('touchstart', startGame);
-            };
-            document.addEventListener('click', startGame, { once: true });
-            document.addEventListener('touchstart', startGame, { once: true });
-        }
-    </script>
-
-
-</body></html>
+</body>
+</html>
