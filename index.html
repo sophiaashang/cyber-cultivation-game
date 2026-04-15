@@ -10207,6 +10207,7 @@ async function goOnline(){
     setInterval(sync, 30000);
     await sync();
     console.log('首次同步完成');
+    setInterval(loadChatMsgs, 10000); // 每10秒刷新聊天
   } catch(e) {
     console.log('初始化错误:', e);
   }
@@ -10248,6 +10249,46 @@ async function sync(){
 
 
 
+
+window.sendChatMsg = async function() {
+    const input = document.getElementById('channelInput');
+    const msg = input.value.trim();
+    if (!msg || !sb) return;
+    
+    await sb.from('messages').insert({
+        player_id: pid,
+        player_name: gameState.name || '道友',
+        player_avatar: gameState.avatar || '🦊',
+        content: msg,
+        created_at: Date.now()
+    });
+    
+    input.value = '';
+    await loadChatMsgs();
+}
+
+window.loadChatMsgs = async function() {
+    if (!sb) return;
+    const { data } = await sb.from('messages')
+        .select('*')
+        .order('created_at', { ascending: false })
+        .limit(50);
+    
+    const container = document.getElementById('channelMessages');
+    if (!container || !data) return;
+    
+    let html = '';
+    data.reverse().forEach(m => {
+        html += `<div style="padding:6px 10px;margin:4px 0;background:rgba(255,255,255,0.05);border-radius:8px;">
+            <span style="font-size:14px;">${m.player_avatar || '🦊'}</span>
+            <span style="color:#00f0ff;font-weight:bold;">${m.player_name || '道友'}:</span>
+            <span style="color:#fff;">${m.content}</span>
+        </div>`;
+    });
+    container.innerHTML = html;
+    container.scrollTop = container.scrollHeight;
+}
+
 window.openRankModal = async function() {
     const modal = document.getElementById('rankModal');
     const list = document.getElementById('rankList');
@@ -10283,9 +10324,9 @@ window.toggleOnlinePanel = async function() {
     if (panel) {
         panel.classList.toggle('collapsed');
         if (!panel.classList.contains('collapsed')) {
-            // 打开面板时先同步一次数据
             if (typeof sync === 'function') await sync();
             updateOnlinePanelList();
+            loadChatMsgs();
         }
     }
 }
