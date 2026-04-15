@@ -10296,10 +10296,13 @@ window.sendChatMsg = async function() {
 window.loadChatMsgs = async function() {
     if (!sb) return;
     try {
+        // 只获取最近10分钟的消息
+        const tenMinAgo = Date.now() - 600000;
         const { data } = await sb.from('messages')
             .select('*')
+            .gte('created_at', tenMinAgo)
             .order('created_at', { ascending: false })
-            .limit(50);
+            .limit(30);
     
     const container = document.getElementById('channelMessages');
     if (!container || !data) return;
