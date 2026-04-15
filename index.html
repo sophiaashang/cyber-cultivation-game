@@ -3420,6 +3420,26 @@
     // 注意：版本检查已移到 init() 函数末尾执行，避免影响存档加载
     </script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+.rank-close-btn {
+    position: absolute;
+    right: -50px;
+    top: 50%;
+    transform: translateY(-50%);
+    writing-mode: vertical-rl;
+    background: rgba(128, 0, 255, 0.8);
+    color: white;
+    border: none;
+    padding: 15px 8px;
+    border-radius: 0 10px 10px 0;
+    cursor: pointer;
+    font-size: 12px;
+}
+.rank-modal {
+    position: relative;
+}
+</style>
 </head>
 <body>
     <!-- 右上角在线道友显示 -->
@@ -3714,7 +3734,8 @@
     <div class="modal-overlay" id="modalOverlay" onclick="closeAllModals()"></div>
     
     <!-- 排行榜弹窗 -->
-    <div class="rank-modal" id="rankModal" style="display: none;">
+    <div class="rank-modal" id="rankModal" style="display: none;position:relative;">
+            <button class="rank-close-btn" onclick="document.getElementById('rankModal').style.display='none'">关闭</button>
         <div class="rank-title">🏆 境界排行榜</div>
         <ul class="rank-list" id="rankList"></ul>
         <div class="modal-buttons" style="margin-top: 20px;">
