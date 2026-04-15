@@ -10228,7 +10228,7 @@ async function goOnline(){
     setInterval(sync, 30000);
     await sync();
     console.log('首次同步完成');
-    setInterval(loadChatMsgs, 10000); // 每10秒刷新聊天
+    setInterval(loadChatMsgs, 5000); // 每10秒刷新聊天
   } catch(e) {
     console.log('初始化错误:', e);
   }
@@ -10286,14 +10286,20 @@ window.sendChatMsg = async function() {
     
     input.value = '';
     await loadChatMsgs();
+    // 滚动到底部
+    setTimeout(() => {
+        const container = document.getElementById('channelMessages');
+        if (container) container.scrollTop = container.scrollHeight;
+    }, 100);
 }
 
 window.loadChatMsgs = async function() {
     if (!sb) return;
-    const { data } = await sb.from('messages')
-        .select('*')
-        .order('created_at', { ascending: false })
-        .limit(50);
+    try {
+        const { data } = await sb.from('messages')
+            .select('*')
+            .order('created_at', { ascending: false })
+            .limit(50);
     
     const container = document.getElementById('channelMessages');
     if (!container || !data) return;
