@@ -10247,6 +10247,37 @@ async function sync(){
 }
 
 
+
+window.openRankModal = async function() {
+    const modal = document.getElementById('rankModal');
+    const list = document.getElementById('rankList');
+    
+    // 从 Supabase 获取排行榜数据
+    if (sb) {
+        const { data } = await sb.from('players')
+            .select('name,avatar,realm,cultivation')
+            .order('cultivation', { ascending: false })
+            .limit(10);
+        
+        if (data && data.length > 0) {
+            let html = '';
+            data.forEach((p, i) => {
+                const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i+1}.`;
+                html += `<li class="rank-item">
+                    <span class="rank-medal">${medal}</span>
+                    <span class="rank-avatar">${p.avatar || '🦊'}</span>
+                    <span class="rank-name">${p.name || '道友'}</span>
+                    <span class="rank-realm">${p.realm || '爬虫小子'}</span>
+                    <span class="rank-score">${(p.cultivation || 0).toLocaleString()} 修为</span>
+                </li>`;
+            });
+            list.innerHTML = html;
+        }
+    }
+    
+    modal.style.display = 'flex';
+}
+
 window.toggleOnlinePanel = async function() {
     const panel = document.getElementById('onlinePanel');
     if (panel) {
