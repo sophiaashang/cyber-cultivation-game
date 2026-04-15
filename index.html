@@ -3444,7 +3444,7 @@
 <body>
     <!-- 右上角在线道友显示 -->
     <div class="header-online-display" id="headerOnlineDisplay">
-        🌐 在线道友：<span id="headerOnlineCount">888</span> 位
+        🌐 在线道友：<span id="headerOnlineCount">0</span> 位
     </div>
     
     <div class="game-container">
@@ -3499,7 +3499,7 @@
             <div class="online-players">
                 <div class="online-players-title">🌐 在线道友</div>
                 <div>
-                    <span class="online-count" id="onlineCount">888</span>
+                    <span class="online-count" id="onlineCount">0</span>
                     <span class="online-unit">位</span>
                 </div>
             </div>
@@ -3710,7 +3710,7 @@
             <div class="online-panel-content" id="onlinePanelContent">
                 <div class="panel-title" style="display:flex;justify-content:space-between;align-items:center;">
                     <span>🌐 在线道友</span>
-                    <span id="onlineCount" style="font-size:12px;color:#0f0;">12人</span>
+                    <span id="onlineCount" style="font-size:12px;color:#0f0;">0人</span>
                 </div>
                 <div class="online-list" id="onlineList"></div>
             
@@ -6019,8 +6019,7 @@ function importSave() {
             document.getElementById('totalCultivation').textContent = formatNumber(gameState.totalCultivation);
             document.getElementById('totalFish').textContent = gameState.totalFish;
             
-            // 更新在线道友（模拟）
-            document.getElementById('onlineCount').textContent = Math.floor(800 + Math.random() * 200);
+            // 在线人数由 Supabase 实时更新
             
             // 更新设置开关
             document.getElementById('musicToggle').classList.toggle('active', gameState.settings.music);
